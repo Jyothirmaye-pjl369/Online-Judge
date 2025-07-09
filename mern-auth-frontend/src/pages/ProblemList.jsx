@@ -1,7 +1,7 @@
 // src/pages/ProblemList.jsx
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import axiosInstance from '../api/axios';
+import axiosInstance from '../api/axiosInstance';
 
 const PAGE_SIZE = 10;
 
@@ -27,9 +27,14 @@ const ProblemList = () => {
     if (difficulty) query += `&difficulty=${difficulty}`;
     if (tag) query += `&tags=${encodeURIComponent(tag.trim().toLowerCase())}`;
     if (search) query += `&title=${encodeURIComponent(search)}`;
-    const res = await axiosInstance.get(`/problems${query}`);
-    setProblems(res.data.problems || res.data);
-    setTotal(res.data.total || res.data.length);
+    try {
+      const res = await axiosInstance.get(`/problems${query}`);
+      console.log('✅ Problems loaded:', res.data);
+      setProblems(res.data.problems || res.data);
+      setTotal(res.data.total || res.data.length);
+    } catch (err) {
+      console.error('❌ Error fetching problems:', err);
+    }
   };
 
   useEffect(() => {
