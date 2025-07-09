@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  compiler-server:
+    build:
+      context: ..
+      dockerfile: compiler-server/Dockerfile
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./compiler-server:/app
+    restart: unless-stopped

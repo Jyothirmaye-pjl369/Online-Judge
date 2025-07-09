@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('./fonts.css');
+
+body {
+  background-color: #fff;
+  color: #111827;
+  font-family: 'Inter', 'Poppins', 'IBM Plex Sans', Arial, sans-serif;
+  transition: background 0.4s, color 0.4s;
+}
+
+html.dark body {
+  background-color: #111827;
+  color: #f3f4f6;
+  transition: background 0.4s, color 0.4s;
+}
+
+button, a, .btn {
+  transition: background 0.3s, color 0.3s, transform 0.2s;
+}
+
+button:hover, a:hover, .btn:hover {
+  transform: scale(1.05);
+}

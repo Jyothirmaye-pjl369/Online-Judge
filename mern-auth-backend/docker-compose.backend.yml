@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  mern-auth-backend:
+    build:
+      context: ./mern-auth-backend
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./mern-auth-backend:/app
+    env_file:
+      - ./mern-auth-backend/.env
+    restart: unless-stopped

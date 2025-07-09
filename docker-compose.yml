@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  compiler-server:
+    build: ./compiler-server
+    container_name: compiler-server
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./compiler-server/temp:/usr/src/app/temp
+    restart: unless-stopped
+
