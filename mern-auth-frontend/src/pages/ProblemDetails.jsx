@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import axiosInstance from '../api/axios';
+import axiosInstance from '../api/axiosInstance';
 import { useUser } from '../context/UserContext';
 
 const languages = ['cpp', 'python', 'c'];
@@ -12,7 +12,7 @@ const codeTemplates = {
   c: `// Write your C code here`
 };
 
-const API_BASE_URL = "http://localhost:5000";
+const API_BASE_URL = process.env.REACT_APP_API_URL;
 
 const ProblemDetails = () => {
   const { problemId } = useParams();
@@ -31,7 +31,7 @@ const ProblemDetails = () => {
   useEffect(() => {
     const fetchProblem = async () => {
       try {
-        const res = await axios.get(`${API_BASE_URL}/api/problems/${problemId}`);
+        const res = await axiosInstance.get(`/api/problems/${problemId}`);
         setProblem(res.data);
       } catch (err) {
         console.error(err);
@@ -54,7 +54,7 @@ const ProblemDetails = () => {
       const timestamp = now.toISOString();
 
       const res = await axiosInstance.post(
-        '/submit',
+        '/api/submit',
         {
           problemId,
           code,
@@ -81,7 +81,7 @@ const ProblemDetails = () => {
     try {
       const token = localStorage.getItem('token');
       const res = await axiosInstance.post(
-        '/submit/run',
+        '/api/submit/run',
         { code, language, input: customInput },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -97,7 +97,7 @@ const ProblemDetails = () => {
     setExplainLoading(true);
     setExplanation('');
     try {
-      const res = await axiosInstance.post('/ai/explain', { code });
+      const res = await axiosInstance.post('/api/ai/explain', { code });
       setExplanation(res.data.explanation);
     } catch (err) {
       setExplanation('Failed to get explanation.');
