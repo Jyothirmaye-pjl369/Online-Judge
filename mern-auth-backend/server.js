@@ -20,7 +20,13 @@ const dashboardRoutes = require('./routes/dashboardRoutes');
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: [
+    'http://localhost:3000', // for local dev
+    'https://online-judge-frontend-x08v.onrender.com' // deployed frontend
+  ],
+  credentials: true
+}));
 app.use(express.json());
 
 app.use((req, res, next) => {
