@@ -54,7 +54,7 @@ const ProblemDetails = () => {
       const timestamp = now.toISOString();
 
       const res = await axiosInstance.post(
-        '/api/submit',
+        '/submit',
         {
           problemId,
           code,
@@ -81,7 +81,7 @@ const ProblemDetails = () => {
     try {
       const token = localStorage.getItem('token');
       const res = await axiosInstance.post(
-        '/api/submit/run',
+        '/submit/run',
         { code, language, input: customInput },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -97,7 +97,7 @@ const ProblemDetails = () => {
     setExplainLoading(true);
     setExplanation('');
     try {
-      const res = await axiosInstance.post('/api/ai/explain', { code });
+      const res = await axiosInstance.post('/ai/explain', { code });
       setExplanation(res.data.explanation);
     } catch (err) {
       setExplanation('Failed to get explanation.');
