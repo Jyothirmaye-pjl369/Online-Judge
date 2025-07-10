@@ -10,10 +10,14 @@ const protect = require('../middleware/authMiddleware');
 router.post('/register', async (req, res) => {
   const { username, email, password, bio, role } = req.body;
   try {
+    // Validate required fields
+    if (!username || !email || !password) {
+      return res.status(400).json({ message: 'Username, email, and password are required' });
+    }
     // Check if user exists
     const userExists = await User.findOne({ email });
     if (userExists) {
-      return res.status(400).json({ message: 'User already exists' });
+      return res.status(400).json({ message: 'Email already exists' });
     }
     let userRole = 'user';
     if (role === 'admin' && req.user && req.user.role === 'admin') userRole = 'admin';
@@ -25,6 +29,14 @@ router.post('/register', async (req, res) => {
       user: { id: user._id, username: user.username, email: user.email, bio: user.bio, role: user.role }
     });
   } catch (error) {
+    // Handle duplicate key error (race condition)
+    if (error.code === 11000) {
+      return res.status(400).json({ message: 'Email already exists' });
+    }
+    // Handle validation errors
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({ message: error.message });
+    }
     res.status(500).json({ message: 'Server error' });
   }
 });
