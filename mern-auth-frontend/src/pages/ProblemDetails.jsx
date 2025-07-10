@@ -31,7 +31,7 @@ const ProblemDetails = () => {
   useEffect(() => {
     const fetchProblem = async () => {
       try {
-        const res = await axiosInstance.get(`/api/problems/${problemId}`);
+        const res = await axiosInstance.get(`/problems/${problemId}`);
         setProblem(res.data);
       } catch (err) {
         console.error(err);

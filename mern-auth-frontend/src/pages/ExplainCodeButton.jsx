@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axiosInstance from '../api/axiosInstance';
 
 const ExplainCodeButton = ({ code }) => {
   const [explanation, setExplanation] = useState('');
@@ -9,7 +9,7 @@ const ExplainCodeButton = ({ code }) => {
     setLoading(true);
     setExplanation('');
     try {
-      const res = await axios.post('/api/ai/explain', { code });
+      const res = await axiosInstance.post('/ai/explain', { code });
       setExplanation(res.data.explanation);
     } catch (err) {
       setExplanation('Failed to get explanation.');
